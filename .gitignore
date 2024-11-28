@@ -1,0 +1,56 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Virtual environment
+env/
+venv/
+*.env/
+
+# IDEs
+.vscode/
+.idea/
+
+# MacOS
+.DS_Store
+
+# Eclipse and IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Maven
+target/
+*.log
+*.jar
+*.war
+*.ear
+
+# Gradle
+.gradle/
+build/
+
+# Spring Boot DevTools
+.spring-boot-devtools/
+
+# Java
+*.class
+*.jar
+*.war
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IntelliJ IDEA
+*.iws
+*.iml
+*.ipr
+out/
+
+# Logs
+logs/
+*.log
