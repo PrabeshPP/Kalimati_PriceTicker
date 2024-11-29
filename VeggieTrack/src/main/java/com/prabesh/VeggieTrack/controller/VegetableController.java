@@ -2,10 +2,11 @@ package com.prabesh.VeggieTrack.controller;
 
 import com.prabesh.VeggieTrack.DTO.VegetableDTO;
 import com.prabesh.VeggieTrack.service.impl.VegetableServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,19 +16,39 @@ public class VegetableController {
     public VegetableController(VegetableServiceImpl vegetableServiceImpl){
         this.vegetableServiceImpl = vegetableServiceImpl;
     }
-    //API-END point to get all the prices for vegetabeles
+
 
     //this api-end points generates vegetables prices at the present date
     @GetMapping("/vegetables")
-    public List<VegetableDTO> getAllVegetables(){
-        List<VegetableDTO> list = new ArrayList<>();
-        return vegetableServiceImpl.getAllVegetables();
+    public ResponseEntity<List<VegetableDTO>> getAllVegetables(){
+        return ResponseEntity.ok(vegetableServiceImpl.getAllVegetables());
     }
 
     //API-END point to get prices of only the vegetables that the users want
+    @GetMapping("/vegetables/{engName}")
+    public ResponseEntity<?> getVegetablesByName(@PathVariable String engName){
 
-    //API-END point to get the price History of a particular vegetables
+        List<VegetableDTO> vegetableDTOS = vegetableServiceImpl.getAllVegetablesByName(engName);
 
+        if(vegetableDTOS.isEmpty()){
+            return ResponseEntity.badRequest().body("The requested vegetable name does not exist in the database. We " +
+                    "will soon add the request.");
+        }
+        return ResponseEntity.ok(vegetableDTOS);
+    }
+
+    //API-END point to get the price of a particular Vegetable in local time
+    @GetMapping("/vegetables/price/{engName}")
+    public ResponseEntity<?> getVegetablePrice(@PathVariable String engName){
+        VegetableDTO vegetableDTO = vegetableServiceImpl.findVegetablePrice(engName);
+
+        if(vegetableDTO == null){
+           return ResponseEntity.badRequest().body("No match Found with the provided Vegetable Name");
+        }
+
+
+        return ResponseEntity.ok(vegetableDTO);
+    }
 
     //API_END Point to get the price history of the average price of the vegetables
 

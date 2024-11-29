@@ -2,6 +2,7 @@ package com.prabesh.VeggieTrack.service.impl;
 
 import com.prabesh.VeggieTrack.DAO.VegetableRepository;
 import com.prabesh.VeggieTrack.DTO.VegetableDTO;
+import com.prabesh.VeggieTrack.Util.VegetableComp;
 import com.prabesh.VeggieTrack.model.Vegetable;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +40,83 @@ public class VegetableServiceImpl implements com.prabesh.VeggieTrack.service.Veg
             }
         }
 
-        System.out.println(Arrays.toString(vegetableDTOS.toArray()));
 
         return vegetableDTOS;
+    }
+
+    @Override
+    public List<VegetableDTO> getAllVegetablesByName(String name) {
+        List<Vegetable> vegetables = vegetableRepository.findAll();
+        List<VegetableDTO> vegetableDTOS = new ArrayList<>();
+
+        for(Vegetable vegetable : vegetables) {
+            String currName = vegetable.getEngName();
+
+            if(currName.equals(name)){
+                vegetableDTOS.add(new VegetableDTO(vegetable.getId(),vegetable.getEngName(),vegetable.getNepName(),
+                        vegetable.getMaxPrice(),vegetable.getMinPrice(),vegetable.getAvgPrice(),vegetable.getDate()));
+            }
+        }
+
+        return vegetableDTOS;
+    }
+
+    @Override
+    public VegetableDTO findVegetablePrice(String name) {
+        LocalDate localDate = LocalDate.now();
+        List<Vegetable> vegetables = vegetableRepository.findAll();
+        List<VegetableDTO> vegetableDTOS = new ArrayList<>();
+
+        for(Vegetable vegetable: vegetables){
+
+            String currName = vegetable.getEngName();
+
+            if(currName.equals(name)){
+                vegetableDTOS.add(new VegetableDTO(vegetable.getId(),vegetable.getEngName(),vegetable.getNepName(),
+                        vegetable.getMaxPrice(),vegetable.getMinPrice(),vegetable.getAvgPrice(),vegetable.getDate()));
+            }
+        }
+
+        if(vegetableDTOS.isEmpty()){
+            return null;
+        }
+
+
+            VegetableDTO[] vegetableDTOSArr = new VegetableDTO[vegetableDTOS.size()];
+
+            for(int i = 0; i<vegetableDTOS.size(); i++){
+                vegetableDTOSArr[i] = vegetableDTOS.get(i);
+            }
+
+
+            Arrays.sort(vegetableDTOSArr,new VegetableComp());
+
+            //implementing binary search Algorithm
+            //This will give me the time Complexity of O(n)
+            int start = 0;
+            int end = vegetableDTOSArr.length-1;
+
+
+            while(start<=end){
+                int mid = start+(end-start)/2;
+                //to convert the Date class to the local Variable
+                LocalDate date =
+                        vegetableDTOSArr[mid].getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                if(date.isEqual(localDate)){
+                    return vegetableDTOSArr[mid];
+                }else if(date.isAfter(localDate)){
+                    end--;
+                }else{
+                    start++;
+                }
+
+
+
+            }
+
+            return null;
+
     }
 
 
