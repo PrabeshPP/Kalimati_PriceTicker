@@ -1,13 +1,21 @@
+import os
 import psycopg2
 
-DB_NAME = "Kalimati_Prices"
-DB_USER ="postgres"
-DB_PASS ="X1y2z3###"
-DB_HOST="localhost"
-DB_PORT ="5432"
+from dotenv import load_dotenv,find_dotenv
+
+load_dotenv(find_dotenv())
+
+
 
 def connectDB():
-    connect = psycopg2.connect("dbname=Kalimati_Prices user=postgres")
+    connect = psycopg2.connect(
+        user = os.getenv("RDS_USERNAME"),                                      
+        password = os.getenv("RDS_PW"),                                  
+        host = os.getenv("RDS_URL"),                                            
+        port = os.getenv("5432"),                                          
+        database = os.getenv("postgres") 
+
+    )
     print("Connected to DB successfully!")
 
     return connect

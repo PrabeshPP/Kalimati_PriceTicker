@@ -5,6 +5,7 @@ from datetime import date
 from vegetable import Vegetable
 from dbSetup import connectDB
 from datetime import datetime
+import uuid
 
 
 
@@ -111,18 +112,20 @@ def main():
       
         
         insert_query = """
-        INSERT INTO Vegetables(english_name,nepali_name,max_price,min_price,avg_price,date) VALUES(%s,%s,%s,%s,%s,%s);
+        INSERT INTO Vegetables(id,english_name,nepali_name,max_price,min_price,avg_price,date) VALUES(%s,%s,%s,%s,%s,%s,%s);
 """
 
         
 
         for i in range(len(scraped_data)):
             veg = scraped_data[i]
-            values= (veg.getName(),veg.getNepaliName(),veg.getMaxPrice(),veg.getMinPrice(),veg.getAvgPrice(),today)
+            random_uuid  = uuid.uuid4()
+            values= (str(random_uuid),veg.getName(),veg.getNepaliName(),veg.getMaxPrice(),veg.getMinPrice(),veg.getAvgPrice(),today)
             cur.execute(insert_query,values)
             connect.commit()
 
-
+        print("Successfully added the today's data to the Database!")
+        
         cur.close()
         connect.close()        
        
