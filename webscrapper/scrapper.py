@@ -70,12 +70,15 @@ def scrap_date(soup):
     date_str = date_tag.text
     date_list = date_str.split(" ")
     required_date = date_list[3:]
+    
     month = required_date[0]
-    day = required_date[1][0:2]
+    
+    # this has some minor bugs to work on when the day is in double digit
+    day = required_date[1][:len(required_date[1])-1]
     year = required_date[2]
     date_str = year+month+day
     date_obj = datetime.strptime(date_str,"%Y%B%d").date()
-    
+  
 
     return date_obj
 
@@ -121,6 +124,7 @@ def main():
             veg = scraped_data[i]
             random_uuid  = uuid.uuid4()
             values= (str(random_uuid),veg.getName(),veg.getNepaliName(),veg.getMaxPrice(),veg.getMinPrice(),veg.getAvgPrice(),today)
+        
             cur.execute(insert_query,values)
             connect.commit()
 
