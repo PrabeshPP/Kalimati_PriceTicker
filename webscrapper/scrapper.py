@@ -124,7 +124,7 @@ def main():
             veg = scraped_data[i]
             random_uuid  = uuid.uuid4()
             values= (str(random_uuid),veg.getName(),veg.getNepaliName(),veg.getMaxPrice(),veg.getMinPrice(),veg.getAvgPrice(),today)
-        
+           
             cur.execute(insert_query,values)
             connect.commit()
 
