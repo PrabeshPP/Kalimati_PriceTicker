@@ -51,15 +51,42 @@ public class VegetableController {
     }
 
     //API_END Point to get the price history of the average price of the vegetables
+    @GetMapping("/vegetables/avgprice/{productName}")
+    public ResponseEntity<?> getVegetableAveragePrice(@PathVariable String productName){
+        List<String> avgPrices = vegetableServiceImpl.getAverageVegetablePrices(productName);
+
+        if(avgPrices == null){
+            return ResponseEntity.badRequest().body("No match found with the provided Vegetable Name");
+        }
+
+        return ResponseEntity.ok(avgPrices);
+    }
 
     //API_END Point to get the price history of the max_price of the particular vegetables
+    @GetMapping("/vegetables/maxprice/{productName}")
+    public ResponseEntity<?> getVegetableMaxPrice(@PathVariable String productName){
+        List<String> maxPrices = vegetableServiceImpl.getMaxVegetablePrices(productName);
+
+        if(maxPrices == null){
+            return ResponseEntity.badRequest().body("No match found with the provided Vegetable Name");
+        }
+
+        return ResponseEntity.ok(maxPrices);
+    }
+
 
     //API_END Point to get the price history of the min_price of the particular vegetables
+    @GetMapping("/vegetables/minprice/{productName}")
+    public ResponseEntity<?> getVegetableMinPrice(@PathVariable String productName){
+        List<String> minPrices = vegetableServiceImpl.getMinVegetablePrices(productName);
 
-    //API_END Point to provide the Max_price of the vegetable  at any particular day
+        if(minPrices == null){
+            return ResponseEntity.badRequest().body("No match found with the provided Vegetable Name");
+        }
 
+        return ResponseEntity.ok(minPrices);
+    }
 
-    //API-END Point to provide the vegetable with the min_price at an particular day
 
     
 }

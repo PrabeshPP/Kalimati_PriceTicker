@@ -120,4 +120,50 @@ public class VegetableServiceImpl implements com.prabesh.VeggieTrack.service.Veg
     }
 
 
+
+    // this method uses another method as a helper method, it helps in reducing the overhead calculation
+    //saving the computation power.
+    @Override
+    public List<String> getAverageVegetablePrices(String name) {
+        List<VegetableDTO> vegetableDTOS = getAllVegetablesByName(name);
+        if(vegetableDTOS == null){
+            return  null;
+        }
+        List<String> avgPrices = new ArrayList<>();
+        for(VegetableDTO currVegetable : vegetableDTOS){
+                avgPrices.add(currVegetable.getAvgPrice());
+        }
+
+        return  avgPrices;
+    }
+
+    @Override
+    public List<String> getMaxVegetablePrices(String productName) {
+        List<VegetableDTO> vegetableDTOS = getAllVegetablesByName(productName);
+        if(vegetableDTOS == null){
+            return  null;
+        }
+        List<String> maxPrices = new ArrayList<>();
+        for(VegetableDTO currVegetable : vegetableDTOS){
+            maxPrices.add(currVegetable.getMaxPrice());
+        }
+
+        return  maxPrices;
+    }
+
+    @Override
+    public List<String> getMinVegetablePrices(String productName) {
+        List<VegetableDTO> vegetableDTOS = getAllVegetablesByName(productName);
+        if(vegetableDTOS == null){
+            return  null;
+        }
+        List<String> minPrices = new ArrayList<>();
+        for(VegetableDTO currVegetable : vegetableDTOS){
+            minPrices.add(currVegetable.getMinPrice());
+        }
+
+        return  minPrices;
+    }
+
+
 }
